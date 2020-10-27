@@ -1,4 +1,5 @@
 import *as React from "react";
+import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import SearchBar from "../../components/SearchBar/SearchBar";
 
@@ -22,10 +23,11 @@ const Title = styled.img`
 
 
 const HomePage: React.FC = () => {
+    const history = useHistory();
     return (
     <Container>
         <Title src="/assets/images/title.png" />
-        <SearchBar onSearch={() => { alert("click") }} />
+        <SearchBar onSearch={(word) => { history.push("/result/"+word) }} />
     </Container>);
 }
 

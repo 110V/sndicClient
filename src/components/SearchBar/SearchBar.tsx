@@ -3,10 +3,10 @@ import styled from 'styled-components';
 import { InputType } from 'zlib';
 import SearchButton from './SearchButton';
 
-interface Props{
-    onSearch?:(word:string)=>void,
-    onTextChange?:(str:React.ChangeEvent<HTMLInputElement>)=>void, 
-    word?:string,
+interface Props {
+    onSearch?: (word: string) => void,
+    onTextChange?: (str: string) => void,
+    word?: string,
 }
 
 
@@ -32,12 +32,35 @@ const Input = styled.input`
     border: none;
 `
 
-const SearchBar:React.FC<Props> = (props:Props)=>{
+const SearchBar: React.FC<Props> = (props: Props) => {
+    const [inputValue,SetInputValue] = React.useState<string>("");
+
+    const callOnSearch = () => {
+        if (props.onSearch && inputValue != "")
+            props.onSearch(inputValue);
+    }
+
+    const callOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        SetInputValue(e.target.value);
+        if (props.onTextChange)
+            props.onTextChange(inputValue);
+    }
+
+    const onKeyUp = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.key == "Enter") {
+            callOnSearch();
+        }
+    }
+
+    React.useEffect(()=>{
+        SetInputValue(props.word?props.word:"");
+    },[])
+
     return (
-    <Bar>
-        <Input value={props.word} onChange={props.onTextChange}/>
-        <SearchButton />
-    </Bar>)
+        <Bar>
+            <Input onKeyUp={onKeyUp} value={inputValue} onChange={callOnChange} />
+            <SearchButton onClick={callOnSearch} />
+        </Bar>)
 }
 
 export default SearchBar;
