@@ -1,10 +1,10 @@
-import stemmer from "stemmer";
+import {algorithms, newStemmer} from "snowball-stemmers";
 import AnalyzedText from "./AnalyzedText";
 
 export default class TextAnalyzer {
     private static matchSentence:RegExp = /([^\.\!\?]*[\.\!\?])|([①-⑤][^①-⑤]+)/g;
     private static answer:RegExp = /^[①-⑤][^①-⑤]+/;
-
+    private static stemmer = newStemmer("english");
     //나중에 정규식으로 변경
     public static fromStem(text: string, stem: string) {
         let indexes: number[] = [];
@@ -16,7 +16,7 @@ export default class TextAnalyzer {
             }
             for(let j =0;j<splitedSentence.length;j++)
             {
-                if (stemmer(splitedSentence[j].trim()).startsWith(stem)) {
+                if (this.stemmer.stem(splitedSentence[j].trim()).includes(stem)) {
                     indexes.push(i);
                     break;
                 }

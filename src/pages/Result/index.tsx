@@ -1,7 +1,7 @@
 import *as React from "react";
 import { useState, useEffect } from "react";
 import { RouteComponentProps } from 'react-router-dom';
-import stemmer from "stemmer";
+import {newStemmer} from "snowball-stemmers";
 import styled from "styled-components";
 import SearchBar from "../../components/SearchBar/SearchBar";
 import DicRequester from "../../requester/DicRequester";
@@ -29,7 +29,9 @@ const Container = styled.div`
 `
 
 
+
 const ResultPage: React.FC<RouteComponentProps<MatchParams>> = ({ match }) => {
+    const stemmer = newStemmer("english");;
     const currentWord = React.useRef<string>(match.params.word);
     const history = useHistory();
     const dicRequester = new DicRequester("http://sgb03.iptime.org:3000");
@@ -39,7 +41,7 @@ const ResultPage: React.FC<RouteComponentProps<MatchParams>> = ({ match }) => {
 
     const getMeanings = async()=>{
         try {
-            let stem: string = stemmer(currentWord.current);
+            let stem: string = stemmer.stem(currentWord.current);
             let meaning1 = await dicRequester.getMeaning(stem);
             let meaning2 = await dicRequester.getMeaning(currentWord.current);
             if (meaning1.word == meaning2.word) {
@@ -56,8 +58,8 @@ const ResultPage: React.FC<RouteComponentProps<MatchParams>> = ({ match }) => {
     }
     const getAnalzeTexts = async()=>{
         try{
-            let stem: string = stemmer(currentWord.current);
-            let texts: string[] = await dicRequester.getTextsContainWord(currentWord.current);
+            let stem: string = stemmer.stem(currentWord.current);
+            let texts: string[] = await dicRequester.getTextsContainWord(stem);
             let analyzedTexts = texts.map((text) => { return TextAnalyzer.fromStem(text, stem) });
             setAnalyzedTexts(analyzedTexts);
         }
