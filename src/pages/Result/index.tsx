@@ -34,7 +34,7 @@ const ResultPage: React.FC<RouteComponentProps<MatchParams>> = ({ match }) => {
     const stemmer = newStemmer("english");;
     const currentWord = React.useRef<string>(match.params.word);
     const history = useHistory();
-    const dicRequester = new DicRequester("http://sgb03.iptime.org:3000");
+    const dicRequester = new DicRequester("https://sndic.herokuapp.com/");
 
     const [meanings,setMeanings] = useState<{word:string,meaning:string}[]>([]);
     const [analyzedTexts,setAnalyzedTexts] = useState<AnalyzedText[]>();
