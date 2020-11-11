@@ -9,7 +9,7 @@ interface Props{
 
 const Container = styled.div<{height?:string}>`
     background-color:white;
-    min-width:500px;
+    min-width:700px;
     height: ${(props) => props.height || "80px"};
     width:40vw;
     border-radius:30px;
