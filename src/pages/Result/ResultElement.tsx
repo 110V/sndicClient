@@ -9,9 +9,9 @@ interface Props{
 
 const Container = styled.div<{height?:string}>`
     background-color:white;
-    min-width:700px;
+    min-width:800px;
     height: ${(props) => props.height || "80px"};
-    width:40vw;
+    width:50vw;
     border-radius:30px;
     display:grid;
     align-content:center;
